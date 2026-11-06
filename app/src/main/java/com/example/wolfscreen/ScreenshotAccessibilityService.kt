@@ -6,6 +6,8 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -25,6 +27,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.edit
@@ -156,6 +159,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
             movementMethod = ScrollingMovementMethod()
         }
         view.findViewById<View>(R.id.overlayClose).setOnClickListener { hideOverlay() }
+        view.findViewById<View>(R.id.overlayCopy).setOnClickListener { copyToClipboard(text) }
 
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -165,7 +169,10 @@ class ScreenshotAccessibilityService : AccessibilityService() {
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
-        ).apply { gravity = Gravity.TOP }
+        ).apply {
+            // Внизу: питання зазвичай угорі екрана, і картка не повинна його закривати.
+            gravity = Gravity.BOTTOM
+        }
 
         // Якщо система не дала показати вікно — лишається сповіщення, тож не падаємо.
         runCatching { windowManager().addView(view, params) }
@@ -178,6 +185,15 @@ class ScreenshotAccessibilityService : AccessibilityService() {
     }
 
     private fun windowManager() = getSystemService(WindowManager::class.java)
+
+    private fun copyToClipboard(text: String) {
+        val clipboard = getSystemService(ClipboardManager::class.java)
+        clipboard.setPrimaryClip(ClipData.newPlainText(getString(R.string.app_name), text))
+        // З Android 13 система сама показує підтвердження копіювання — дубль не потрібен.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Toast.makeText(this, R.string.overlay_copied, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     /** Зменшуємо картинку, щоб запит був швидший. */
     private fun downscale(bitmap: Bitmap, maxSide: Int): Bitmap {

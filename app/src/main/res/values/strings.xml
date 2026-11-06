@@ -33,4 +33,6 @@
 
     <!-- Картка з відповіддю поверх екрана -->
     <string name="overlay_close">Закрити</string>
+    <string name="overlay_copy">Копіювати</string>
+    <string name="overlay_copied">Відповідь скопійовано</string>
 </resources>

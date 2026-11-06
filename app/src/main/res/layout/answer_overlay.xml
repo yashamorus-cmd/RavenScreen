@@ -36,7 +36,15 @@
                     android:layout_weight="1"
                     android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-                <!-- Кнопка-текст, а не «✕»: зрозуміліше, і зона натискання не менша за 48dp. -->
+                <!-- Кнопки-текст, а не іконки: зрозуміліше, і зона натискання не менша за 48dp. -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/overlayCopy"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="@string/overlay_copy" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/overlayClose"
                     style="@style/Widget.Material3.Button.TextButton"
