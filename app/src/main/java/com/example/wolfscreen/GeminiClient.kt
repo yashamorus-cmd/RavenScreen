@@ -66,6 +66,9 @@ object GeminiClient {
     // скріни не витрачали на них час. Живе, поки працює служба (весь час, доки WolfScreen увімкнений).
     private val startMode = ConcurrentHashMap<String, Thinking>()
 
+    // До якого моменту (SystemClock.elapsedRealtime) модель не питаємо: вичерпано її ліміт (429).
+    private val skipUntil = ConcurrentHashMap<String, Long>()
+
     /** Чим закінчилася спроба з однією моделлю. */
     private sealed class Outcome {
         class Answer(val text: String) : Outcome()
@@ -91,6 +94,11 @@ object GeminiClient {
             if (round > 0) Thread.sleep(RETRY_DELAY_MS)
             // Перевантажена чи «зависла» модель — одразу пробуємо наступну, легшу.
             for (model in MODELS) {
+                val waitMs = (skipUntil[model] ?: 0L) - SystemClock.elapsedRealtime()
+                if (waitMs > 0) {
+                    lastError = limitMessage(waitMs)
+                    continue
+                }
                 when (val result = askModel(model, apiKey, base64Jpeg)) {
                     is Outcome.Answer -> return result.text
                     is Outcome.Failure -> lastError = result.message
@@ -138,6 +146,10 @@ object GeminiClient {
             val message = root.optJSONObject("error")?.optString("message") ?: text
             Log.w(TAG, "$model/$mode: HTTP $code (${elapsedMs(startedAt)} мс): $message")
 
+            // Поганий ключ Google теж повертає з кодом 400 — це не про режим, і інша модель не допоможе.
+            if (code == 400 && isKeyProblem(root, message)) {
+                throw IOException("Неправильний API-ключ. Перевір його в WolfScreen. ($message)")
+            }
             // Модель не прийняла цей спосіб вимкнути «обдумування» — запам'ятовуємо й пробуємо
             // наступний. Google часто відповідає загальним «invalid argument», тож дивимось лише на код.
             if (code == 400 && mode != Thinking.DEFAULT) {
@@ -148,15 +160,54 @@ object GeminiClient {
             return when (code) {
                 // Такої моделі вже немає.
                 404 -> Outcome.Failure("Модель $model недоступна")
+                // Вичерпано ліміт запитів: Google каже, коли можна знову — до того модель не чіпаємо.
+                429 -> {
+                    val delayMs = retryDelayMs(root)
+                    if (delayMs != null) skipUntil[model] = SystemClock.elapsedRealtime() + delayMs
+                    Outcome.Failure(limitMessage(delayMs))
+                }
                 // Тимчасове перевантаження.
-                503, 429 -> Outcome.Failure("Сервери Google зараз перевантажені, спробуй за хвилину. ($message)")
-                // Решта (напр. поганий ключ) — інша модель не допоможе.
+                503 -> Outcome.Failure("Сервери Google зараз перевантажені, спробуй за хвилину. ($message)")
+                // Решта (напр. немає доступу) — інша модель не допоможе.
                 else -> throw IOException("Помилка API ($code): $message")
             }
         }
     }
 
     private fun elapsedMs(startedAt: Long) = SystemClock.elapsedRealtime() - startedAt
+
+    /** Чи помилка 400 означає поганий ключ (Google позначає це причиною API_KEY_INVALID). */
+    private fun isKeyProblem(root: JSONObject, message: String): Boolean {
+        val details = root.optJSONObject("error")?.optJSONArray("details")
+        if (details != null) {
+            for (i in 0 until details.length()) {
+                if (details.optJSONObject(i)?.optString("reason") == "API_KEY_INVALID") return true
+            }
+        }
+        return message.contains("API key", ignoreCase = true)
+    }
+
+    /**
+     * Через скільки Google дозволяє повторити запит після 429: деталь RetryInfo
+     * з полем retryDelay на кшталт "50020s" або "12.5s". null — якщо Google не сказав.
+     */
+    private fun retryDelayMs(root: JSONObject): Long? {
+        val details = root.optJSONObject("error")?.optJSONArray("details") ?: return null
+        for (i in 0 until details.length()) {
+            val delay = details.optJSONObject(i)?.optString("retryDelay").orEmpty()
+            val seconds = delay.removeSuffix("s").toDoubleOrNull() ?: continue
+            return (seconds * 1000).toLong()
+        }
+        return null
+    }
+
+    /** Зрозуміле пояснення про вичерпаний ліміт: коли можна спробувати знову. */
+    private fun limitMessage(delayMs: Long?): String {
+        if (delayMs == null) return "Вичерпано ліміт запитів до ШІ, спробуй трохи пізніше."
+        val minutes = (delayMs / 60_000).coerceAtLeast(1)
+        val wait = if (minutes >= 60) "${minutes / 60} год ${minutes % 60} хв" else "$minutes хв"
+        return "Вичерпано безкоштовний ліміт запитів до ШІ. Спробуй через $wait."
+    }
 
     private fun buildBody(base64Jpeg: String, mode: Thinking): JSONObject {
         val textPart = JSONObject().put("text", PROMPT)
