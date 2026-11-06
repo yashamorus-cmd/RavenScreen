@@ -1,5 +1,14 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
+}
+
+// Власний ключ підпису: шлях і паролі лежать у keystore.properties (його немає в git).
+// Якщо файлу немає (напр. на іншому комп'ютері), release підписується debug-ключем — збірка не ламається.
+val keystoreFile = rootProject.file("keystore.properties")
+val keystoreProps = Properties().apply {
+    if (keystoreFile.exists()) keystoreFile.inputStream().use { load(it) }
 }
 
 android {
@@ -12,17 +21,29 @@ android {
         applicationId = "com.example.wolfscreen"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        // Збільшувати при кожному новому APK, який даєш іншим, — інакше Android може не оновити.
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (keystoreFile.exists()) {
+            create("release") {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // Підписуємо стандартним debug-ключем, щоб APK можна було
-            // встановити просто з файлу (для особистого користування цього досить).
-            signingConfig = signingConfigs.getByName("debug")
+            // Оновлення встановлюються поверх старої версії лише з тим самим підписом,
+            // тому для APK, який даєш іншим, потрібен свій постійний ключ, а не debug.
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
             optimization {
                 enable = false
             }

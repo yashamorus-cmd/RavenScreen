@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Пароль до ключа підпису — секрет, лише локально.
+/keystore.properties
+*.jks
+*.keystore
