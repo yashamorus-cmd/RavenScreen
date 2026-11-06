@@ -53,6 +53,16 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
+        <!-- Нагадує ввімкнути службу, якщо телефон вимкнув її після оновлення (див. UpdateReceiver.kt).
+             MY_PACKAGE_REPLACED приходить лише цьому додатку, тож exported="false" достатньо. -->
+        <receiver
+            android:name=".UpdateReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Тримає додаток «активним», поки йде запит до ШІ (див. AiRequestService.kt). -->
         <service
             android:name=".AiRequestService"

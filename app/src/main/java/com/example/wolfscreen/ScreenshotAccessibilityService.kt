@@ -60,7 +60,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         instanceRef = WeakReference(this)
-        createChannels()
+        createChannels(this)
         notifications.notify(NOTIF_CONTROL, buildControlNotification())
     }
 
@@ -210,21 +210,6 @@ class ScreenshotAccessibilityService : AccessibilityService() {
         return out.toByteArray()
     }
 
-    private fun createChannels() {
-        notifications.createNotificationChannel(
-            NotificationChannel(
-                CH_CONTROL, getString(R.string.channel_control_name),
-                NotificationManager.IMPORTANCE_LOW
-            )
-        )
-        notifications.createNotificationChannel(
-            NotificationChannel(
-                CH_ANSWER, getString(R.string.channel_answer_name),
-                NotificationManager.IMPORTANCE_HIGH
-            )
-        )
-    }
-
     private fun buildControlNotification(): Notification {
         val captureIntent = Intent(this, CaptureActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -272,6 +257,23 @@ class ScreenshotAccessibilityService : AccessibilityService() {
         val instance: ScreenshotAccessibilityService?
             get() = instanceRef?.get()
 
+        /** Канали сповіщень. Повторне створення безпечне: Android просто нічого не змінює. */
+        fun createChannels(context: Context) {
+            val manager = context.getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(
+                NotificationChannel(
+                    CH_CONTROL, context.getString(R.string.channel_control_name),
+                    NotificationManager.IMPORTANCE_LOW
+                )
+            )
+            manager.createNotificationChannel(
+                NotificationChannel(
+                    CH_ANSWER, context.getString(R.string.channel_answer_name),
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+            )
+        }
+
         /** Чи увімкнена служба в налаштуваннях телефона. */
         fun isEnabled(context: Context): Boolean {
             val enabled = Settings.Secure.getString(
@@ -282,7 +284,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
         }
 
         const val CH_CONTROL = "control"
-        private const val CH_ANSWER = "answer"
+        const val CH_ANSWER = "answer"
         private const val NOTIF_CONTROL = 1
         private const val NOTIF_ANSWER = 2
 

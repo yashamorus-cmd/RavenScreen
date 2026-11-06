@@ -35,4 +35,8 @@
     <string name="overlay_close">Закрити</string>
     <string name="overlay_copy">Копіювати</string>
     <string name="overlay_copied">Відповідь скопійовано</string>
+
+    <!-- Нагадування після оновлення -->
+    <string name="notif_reenable_title">WolfScreen вимкнувся після оновлення</string>
+    <string name="notif_reenable_text">Торкнись, щоб знову увімкнути його в «Спеціальних можливостях» (Встановлені програми → WolfScreen).</string>
 </resources>
