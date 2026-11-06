@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Стилізована голова вовка -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,22 L46,46 L54,39 L62,46 L80,22 L74,62 L65,77 L58,90 L54,85 L50,90 L43,77 L34,62 Z" />
+    <!-- Очі (темні, як фон) -->
+    <path
+        android:fillColor="#1F2937"
+        android:pathData="M45,54 L50,58 L45,61 Z" />
+    <path
+        android:fillColor="#1F2937"
+        android:pathData="M63,54 L58,58 L63,61 Z" />
+</vector>

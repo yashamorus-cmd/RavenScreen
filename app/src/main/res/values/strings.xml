@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">WolfScreen</string>
+
+    <string name="api_key_hint">Встав сюди свій Gemini API-ключ</string>
+    <string name="start_button">Зберегти і увімкнути</string>
+    <string name="stop_button">Вимкнути</string>
+    <string name="status_idle">Не увімкнено</string>
+    <string name="status_running">Працює — тягни шторку і тисни «📸 Скрін»</string>
+    <string name="setup_hint">Як увімкнути (один раз):\n1. Натисни «Зберегти і увімкнути».\n2. У «Спеціальних можливостях» відкрий «Встановлені програми» → WolfScreen і увімкни.\n3. Якщо перемикач сірий: Налаштування → Програми → WolfScreen → ⋮ (угорі праворуч) → «Дозволити обмежені налаштування», і повтори крок 2.</string>
+    <string name="enable_in_settings">Знайди WolfScreen у списку й увімкни</string>
+    <string name="key_saved">Ключ збережено, WolfScreen уже працює</string>
+    <string name="accessibility_description">WolfScreen робить один знімок екрана, лише коли ти натискаєш «📸 Скрін» у шторці, і надсилає його ШІ. Екран постійно не записується, вміст інших додатків не читається.</string>
+    <string name="hint_text">Ключ зберігається лише на цьому телефоні. Нікому не передавай додаток зі своїм ключем.</string>
+    <string name="notif_warning">⚠️ Сповіщення вимкнені — відповіді не прийдуть у шторку. Увімкни їх у налаштуваннях телефона для WolfScreen.</string>
+    <string name="last_answer_title">Остання відповідь</string>
+    <string name="last_answer_empty">Ще нічого — зроби перший скрін.</string>
+    <string name="last_screenshot_desc">Останній зроблений скріншот</string>
+
+    <!-- Помилки -->
+    <string name="error_no_key">Спершу встав API-ключ</string>
+    <string name="error_service_off">WolfScreen вимкнено. Відкрий додаток і увімкни його.</string>
+    <string name="error_old_android">Знімок екрана працює лише на Android 11 і новіших</string>
+
+    <!-- Сповіщення -->
+    <string name="channel_control_name">Керування</string>
+    <string name="channel_answer_name">Відповіді ШІ</string>
+    <string name="notif_control_title">WolfScreen активний</string>
+    <string name="notif_control_text">Тисни кнопку, щоб зробити скрін і запитати ШІ</string>
+    <string name="action_screenshot">📸 Скрін</string>
+    <string name="notif_working">Обробляю скрін…</string>
+    <string name="notif_answer_title">Відповідь ШІ</string>
+    <string name="notif_error_title">Помилка</string>
+
+    <!-- Картка з відповіддю поверх екрана -->
+    <string name="overlay_close">Закрити</string>
+</resources>
