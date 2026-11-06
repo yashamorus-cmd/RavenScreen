@@ -27,8 +27,11 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.edit
+import androidx.core.graphics.scale
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.lang.ref.WeakReference
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -53,7 +56,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         super.onServiceConnected()
-        instance = this
+        instanceRef = WeakReference(this)
         createChannels()
         notifications.notify(NOTIF_CONTROL, buildControlNotification())
     }
@@ -64,7 +67,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
     override fun onInterrupt() = Unit
 
     override fun onDestroy() {
-        instance = null
+        instanceRef = null
         hideOverlay()
         notifications.cancel(NOTIF_CONTROL)
         worker.shutdown()
@@ -127,7 +130,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
 
     /** Показує результат сповіщенням і зберігає його, щоб він був видний і в додатку. */
     private fun report(title: String, text: String) {
-        prefs().edit().putString(KEY_LAST_ANSWER, "$title: $text").apply()
+        prefs().edit { putString(KEY_LAST_ANSWER, "$title: $text") }
         showNotification(title, text)
         // Сповіщення обрізає довгий текст, тому повну відповідь показуємо ще й карткою.
         mainHandler.post { showOverlay(title, text) }
@@ -181,9 +184,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
         val longest = maxOf(bitmap.width, bitmap.height)
         if (longest <= maxSide) return bitmap
         val scale = maxSide.toFloat() / longest
-        return Bitmap.createScaledBitmap(
-            bitmap, (bitmap.width * scale).toInt(), (bitmap.height * scale).toInt(), true
-        )
+        return bitmap.scale((bitmap.width * scale).toInt(), (bitmap.height * scale).toInt())
     }
 
     // JPEG у кілька разів менший за PNG — на мобільному інтернеті це помітно.
@@ -247,10 +248,13 @@ class ScreenshotAccessibilityService : AccessibilityService() {
         const val KEY_LAST_ANSWER = "last_answer"
         const val LAST_SCREENSHOT_FILE = "last_screenshot.jpg"
 
-        /** Працююча служба (або null, якщо її вимкнено). Потрібна, щоб кнопка могла її покликати. */
+        // Слабке посилання: статичне поле не втримає службу в пам'яті після її знищення.
         @Volatile
-        var instance: ScreenshotAccessibilityService? = null
-            private set
+        private var instanceRef: WeakReference<ScreenshotAccessibilityService>? = null
+
+        /** Працююча служба (або null, якщо її вимкнено). Потрібна, щоб кнопка могла її покликати. */
+        val instance: ScreenshotAccessibilityService?
+            get() = instanceRef?.get()
 
         /** Чи увімкнена служба в налаштуваннях телефона. */
         fun isEnabled(context: Context): Boolean {

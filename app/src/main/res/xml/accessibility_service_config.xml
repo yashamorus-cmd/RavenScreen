@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Налаштування служби: їй потрібне лише право робити знімки екрана.
      Читати вміст інших додатків вона не може (canRetrieveWindowContent="false"). -->
+<!-- canTakeScreenshot працює з Android 11 (API 30); на старших служба сама показує
+     помилку «потрібен Android 11», тому tools:targetApi лише прибирає попередження lint. -->
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:canRetrieveWindowContent="false"
     android:canTakeScreenshot="true"
+    tools:targetApi="r"
     android:description="@string/accessibility_description"
     android:notificationTimeout="100" />

@@ -20,8 +20,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -97,12 +102,14 @@ class MainActivity : AppCompatActivity() {
         lastAnswerText.text = prefs().getString(ScreenshotAccessibilityService.KEY_LAST_ANSWER, null)
             ?: getString(R.string.last_answer_empty)
 
-        val file = File(cacheDir, ScreenshotAccessibilityService.LAST_SCREENSHOT_FILE)
-        if (file.exists()) {
-            lastScreenshot.setImageBitmap(BitmapFactory.decodeFile(file.path))
-            lastScreenshot.visibility = View.VISIBLE
-        } else {
-            lastScreenshot.visibility = View.GONE
+        // Розпакування JPEG займає час — робимо це у фоні, щоб екран не «підвисав».
+        lifecycleScope.launch {
+            val file = File(cacheDir, ScreenshotAccessibilityService.LAST_SCREENSHOT_FILE)
+            val bitmap = withContext(Dispatchers.IO) {
+                if (file.exists()) BitmapFactory.decodeFile(file.path) else null
+            }
+            lastScreenshot.setImageBitmap(bitmap)
+            lastScreenshot.visibility = if (bitmap != null) View.VISIBLE else View.GONE
         }
     }
 
@@ -112,7 +119,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.error_no_key, Toast.LENGTH_SHORT).show()
             return
         }
-        prefs().edit().putString(ScreenshotAccessibilityService.KEY_API, key).apply()
+        prefs().edit { putString(ScreenshotAccessibilityService.KEY_API, key) }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
