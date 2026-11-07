@@ -23,7 +23,11 @@ class RavenTileService : TileService() {
         val running = ScreenshotAccessibilityService.isEnabled(this)
         tile.state = if (running) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            tile.subtitle = getString(if (running) R.string.tile_subtitle_on else R.string.tile_subtitle_off)
+            tile.subtitle = if (running) {
+                getString(R.string.tile_subtitle_on, getString(currentMode().labelRes))
+            } else {
+                getString(R.string.tile_subtitle_off)
+            }
         }
         tile.updateTile()
     }
@@ -32,6 +36,14 @@ class RavenTileService : TileService() {
         super.onClick()
         // На заблокованому екрані спершу просимо розблокувати: скрін екрана блокування нікому не потрібен.
         if (isLocked) unlockAndRun { launch() } else launch()
+    }
+
+    private fun currentMode(): PromptMode {
+        val prefs = getSharedPreferences(ScreenshotAccessibilityService.PREFS, MODE_PRIVATE)
+        return PromptMode.effective(
+            PromptMode.fromPref(prefs.getString(ScreenshotAccessibilityService.KEY_MODE, null)),
+            prefs.getString(ScreenshotAccessibilityService.KEY_CUSTOM_PROMPT, null)
+        )
     }
 
     private fun launch() {

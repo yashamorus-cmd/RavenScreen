@@ -26,10 +26,12 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -101,6 +103,41 @@ class MainActivity : AppCompatActivity() {
             true
         }
         setupTileButton()
+        setupModes()
+    }
+
+    /** Чіпи режимів і поле «свого» запиту. Усе зберігається одразу, кнопка «Зберегти» не потрібна. */
+    private fun setupModes() {
+        val chipGroup = findViewById<ChipGroup>(R.id.modeChips)
+        val description = findViewById<TextView>(R.id.modeDescription)
+        val customLayout = findViewById<View>(R.id.customPromptLayout)
+        val customInput = findViewById<EditText>(R.id.customPromptInput)
+        val chipIds = mapOf(
+            PromptMode.SHORT to R.id.chipShort,
+            PromptMode.DETAILED to R.id.chipDetailed,
+            PromptMode.TRANSLATE to R.id.chipTranslate,
+            PromptMode.CUSTOM to R.id.chipCustom,
+        )
+
+        fun show(mode: PromptMode) {
+            description.setText(mode.descriptionRes)
+            customLayout.visibility = if (mode == PromptMode.CUSTOM) View.VISIBLE else View.GONE
+        }
+
+        val saved = PromptMode.fromPref(prefs().getString(ScreenshotAccessibilityService.KEY_MODE, null))
+        chipGroup.check(chipIds.getValue(saved))
+        customInput.setText(prefs().getString(ScreenshotAccessibilityService.KEY_CUSTOM_PROMPT, ""))
+        show(saved)
+
+        chipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            val mode = chipIds.entries.firstOrNull { it.value == checkedIds.firstOrNull() }?.key
+                ?: return@setOnCheckedStateChangeListener
+            prefs().edit { putString(ScreenshotAccessibilityService.KEY_MODE, mode.prefValue) }
+            show(mode)
+        }
+        customInput.doAfterTextChanged { text ->
+            prefs().edit { putString(ScreenshotAccessibilityService.KEY_CUSTOM_PROMPT, text?.toString().orEmpty()) }
+        }
     }
 
     /** Кнопка «Додати плитку»: на Android 13+ системне вікно, на старіших — текстова підказка. */

@@ -43,7 +43,6 @@
     <string name="notif_control_text">Тисни кнопку, щоб зробити скрін і запитати ШІ</string>
     <string name="action_screenshot">📸 Скрін</string>
     <string name="notif_working">Обробляю скрін…</string>
-    <string name="notif_answer_title">Відповідь ШІ</string>
     <string name="notif_error_title">Помилка</string>
 
     <!-- Картка з відповіддю поверх екрана -->
@@ -51,9 +50,23 @@
     <string name="overlay_copy">Копіювати</string>
     <string name="overlay_copied">Відповідь скопійовано</string>
 
+    <!-- Режими запиту (див. PromptMode.kt) -->
+    <string name="overline_mode">Режим</string>
+    <string name="mode_short">Коротко</string>
+    <string name="mode_detailed">Детально</string>
+    <string name="mode_translate">Переклад</string>
+    <string name="mode_custom">Свій</string>
+    <string name="mode_short_desc">Коротка точна відповідь. Для тесту — правильний варіант і одне речення пояснення.</string>
+    <string name="mode_detailed_desc">Покрокове пояснення, як дійти до відповіді. Відповідь — окремим рядком наприкінці.</string>
+    <string name="mode_translate_desc">Переклад усього тексту зі скріну українською. Якщо текст уже українською — англійською.</string>
+    <string name="mode_custom_desc">Ти сам пишеш, що зробити зі скріном. Поки поле порожнє, працює режим «Коротко».</string>
+    <string name="custom_prompt_hint">Що зробити зі скріном?</string>
+    <string name="custom_prompt_helper">Напр.: «Знайди помилку в коді» або «Склади короткий конспект»</string>
+    <string name="notif_answer_title_mode">Відповідь ШІ · %1$s</string>
+
     <!-- Плитка в шторці -->
     <string name="tile_label">RavenScreen</string>
-    <string name="tile_subtitle_on">Скрін → ШІ</string>
+    <string name="tile_subtitle_on">Скрін → ШІ · %1$s</string>
     <string name="tile_subtitle_off">Вимкнено</string>
     <string name="overline_quick">Швидкий доступ</string>
     <string name="tile_description">Плитка в шторці: один дотик — і ворон летить по відповідь. Швидше, ніж шукати кнопку у сповіщенні.</string>

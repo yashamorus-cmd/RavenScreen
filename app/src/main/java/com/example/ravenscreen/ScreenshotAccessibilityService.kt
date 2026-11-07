@@ -124,8 +124,13 @@ class ScreenshotAccessibilityService : AccessibilityService() {
             return
         }
         showNotification(getString(R.string.app_name), getString(R.string.notif_working))
+        val customText = prefs().getString(KEY_CUSTOM_PROMPT, null)
+        val chosen = PromptMode.fromPref(prefs().getString(KEY_MODE, null))
+        val mode = PromptMode.effective(chosen, customText)
+        // Режим у заголовку — щоб було видно, чому відповідь коротка, детальна чи переклад.
+        val title = getString(R.string.notif_answer_title_mode, getString(mode.labelRes))
         try {
-            report(getString(R.string.notif_answer_title), GeminiClient.ask(apiKey, base64Jpeg))
+            report(title, GeminiClient.ask(apiKey, base64Jpeg, PromptMode.buildPrompt(chosen, customText)))
         } catch (e: Exception) {
             report(getString(R.string.notif_error_title), e.message ?: "невідома помилка")
         }
@@ -247,6 +252,8 @@ class ScreenshotAccessibilityService : AccessibilityService() {
         const val PREFS = "raven_prefs"
         const val KEY_API = "api_key"
         const val KEY_LAST_ANSWER = "last_answer"
+        const val KEY_MODE = "prompt_mode"
+        const val KEY_CUSTOM_PROMPT = "custom_prompt"
         const val LAST_SCREENSHOT_FILE = "last_screenshot.jpg"
 
         // Слабке посилання: статичне поле не втримає службу в пам'яті після її знищення.

@@ -32,13 +32,6 @@ object GeminiClient {
     private const val BASE =
         "https://generativelanguage.googleapis.com/v1beta/models"
 
-    private const val PROMPT =
-        "Це скріншот мого екрана. Якщо на ньому є питання, тест або завдання — " +
-        "дай коротку й точну відповідь українською. Якщо це тест із варіантами, " +
-        "назви правильний варіант і поясни одним реченням. Відповідай стисло. " +
-        // Сповіщення й картка показують текст як є, тож розмітка виглядала б як «**» і «$».
-        "Пиши звичайним текстом: без Markdown (без зірочок, решіток, «---») і без LaTeX. " +
-        "Формули записуй простими символами, наприклад: I = U / R = 6 / 3 = 2 А."
 
     // Скільки разів обходимо список моделей, якщо всі перевантажені, і пауза між обходами.
     private const val ROUNDS = 2
@@ -86,8 +79,11 @@ object GeminiClient {
         .readTimeout(SLOW_CALL_TIMEOUT_S, TimeUnit.SECONDS)
         .build()
 
-    /** Робить запит і повертає відповідь текстом або кидає IOException з поясненням. */
-    fun ask(apiKey: String, base64Jpeg: String): String {
+    /**
+     * Робить запит і повертає відповідь текстом або кидає IOException з поясненням.
+     * [prompt] — що просимо зробити зі скріном (див. PromptMode.buildPrompt).
+     */
+    fun ask(apiKey: String, base64Jpeg: String, prompt: String): String {
         var lastError = "Сервіс недоступний, спробуй ще раз"
 
         repeat(ROUNDS) { round ->
@@ -99,7 +95,7 @@ object GeminiClient {
                     lastError = limitMessage(waitMs)
                     continue
                 }
-                when (val result = askModel(model, apiKey, base64Jpeg)) {
+                when (val result = askModel(model, apiKey, base64Jpeg, prompt)) {
                     is Outcome.Answer -> return result.text
                     is Outcome.Failure -> lastError = result.message
                 }
@@ -114,14 +110,14 @@ object GeminiClient {
      * модель (перевантаження, немає відповіді). Помилки, які інша модель не виправить
      * (напр. поганий ключ), кидає одразу як IOException.
      */
-    private fun askModel(model: String, apiKey: String, base64Jpeg: String): Outcome {
+    private fun askModel(model: String, apiKey: String, base64Jpeg: String, prompt: String): Outcome {
         var mode = startMode[model] ?: Thinking.MINIMAL_LEVEL
         while (true) {
             val request = Request.Builder()
                 .url("$BASE/$model:generateContent")
                 // Ключ у заголовку, а не в адресі: адреси часто потрапляють у логи.
                 .header("x-goog-api-key", apiKey)
-                .post(buildBody(base64Jpeg, mode).toString().toRequestBody(jsonType))
+                .post(buildBody(base64Jpeg, prompt, mode).toString().toRequestBody(jsonType))
                 .build()
             val call = http.newCall(request)
             val limit = if (mode == Thinking.DEFAULT) SLOW_CALL_TIMEOUT_S else FAST_CALL_TIMEOUT_S
@@ -209,8 +205,8 @@ object GeminiClient {
         return "Вичерпано безкоштовний ліміт запитів до ШІ. Спробуй через $wait."
     }
 
-    private fun buildBody(base64Jpeg: String, mode: Thinking): JSONObject {
-        val textPart = JSONObject().put("text", PROMPT)
+    private fun buildBody(base64Jpeg: String, prompt: String, mode: Thinking): JSONObject {
+        val textPart = JSONObject().put("text", prompt)
         val imagePart = JSONObject().put(
             "inline_data",
             JSONObject()
