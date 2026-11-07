@@ -1,17 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Іконка: ворон на гілці на тлі місяця.
+     Згенеровано скриптом, тому координати такі «нерівні». -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Стилізована голова вовка -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M28,22 L46,46 L54,39 L62,46 L80,22 L74,62 L65,77 L58,90 L54,85 L50,90 L43,77 L34,62 Z" />
-    <!-- Очі (темні, як фон) -->
-    <path
-        android:fillColor="#1F2937"
-        android:pathData="M45,54 L50,58 L45,61 Z" />
-    <path
-        android:fillColor="#1F2937"
-        android:pathData="M63,54 L58,58 L63,61 Z" />
+    <path android:fillColor="#2E9CCBF0"
+        android:pathData="M39.0,44.0 C39.0,32.4 48.4,23.0 60.0,23.0 C71.6,23.0 81.0,32.4 81.0,44.0 C81.0,55.6 71.6,65.0 60.0,65.0 C48.4,65.0 39.0,55.6 39.0,44.0 Z" />
+    <path android:fillColor="#FFE8F1FA"
+        android:pathData="M45.0,44.0 C45.0,35.7 51.7,29.0 60.0,29.0 C68.3,29.0 75.0,35.7 75.0,44.0 C75.0,52.3 68.3,59.0 60.0,59.0 C51.7,59.0 45.0,52.3 45.0,44.0 Z" />
+    <path android:fillColor="#FFC9D8E6"
+        android:pathData="M53.6,40.0 C53.6,38.7 54.7,37.6 56.0,37.6 C57.3,37.6 58.4,38.7 58.4,40.0 C58.4,41.3 57.3,42.4 56.0,42.4 C54.7,42.4 53.6,41.3 53.6,40.0 Z" />
+    <path android:fillColor="#FFC9D8E6"
+        android:pathData="M60.8,48.0 C60.8,46.2 62.2,44.8 64.0,44.8 C65.8,44.8 67.2,46.2 67.2,48.0 C67.2,49.8 65.8,51.2 64.0,51.2 C62.2,51.2 60.8,49.8 60.8,48.0 Z" />
+    <path android:strokeColor="#FF0B1119"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M36,70 L72,70" />
+    <path android:fillColor="#FF0B1119"
+        android:pathData="M34.2,44.9 L42.6,40.2 C45.8,37.0 51.0,37.5 53.7,41.2 C56.3,45.4 57.9,50.1 60.0,55.4 L74.2,71.7 L68.4,72.7 L59.5,68.0 C55.2,69.6 51.6,69.0 49.0,68.0 C43.2,67.0 41.1,61.7 41.6,55.4 C41.6,51.2 41.1,48.6 40.0,47.0 Z" />
+    <path android:strokeColor="#FF0B1119"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M48.4,67.0 L47.4,69.6 M52.1,67.0 L52.1,69.6" />
 </vector>

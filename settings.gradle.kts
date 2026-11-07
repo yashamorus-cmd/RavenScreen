@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "WolfScreen"
+rootProject.name = "RavenScreen"
 include(":app")

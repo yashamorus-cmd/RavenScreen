@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WolfScreen">
+        android:theme="@style/Theme.RavenScreen">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -29,7 +29,7 @@
         </activity>
 
         <!-- Прозора активність для кнопки «📸 Скрін»: закриває шторку й одразу зникає.
-             Окрема taskAffinity — щоб не виринав головний екран WolfScreen. -->
+             Окрема taskAffinity — щоб не виринав головний екран RavenScreen. -->
         <activity
             android:name=".CaptureActivity"
             android:excludeFromRecents="true"

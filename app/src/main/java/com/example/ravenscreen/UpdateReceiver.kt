@@ -1,4 +1,4 @@
-package com.example.wolfscreen
+package com.example.ravenscreen
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,7 +9,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationCompat
 
 /**
- * Спрацьовує одразу після оновлення WolfScreen.
+ * Спрацьовує одразу після оновлення RavenScreen.
  *
  * Навіщо: Samsung після оновлення може вимкнути службу «Спеціальних можливостей».
  * Тоді кнопка «📸 Скрін» зникає зі шторки, і без підказки це легко не помітити.

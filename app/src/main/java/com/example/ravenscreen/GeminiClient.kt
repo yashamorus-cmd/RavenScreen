@@ -1,4 +1,4 @@
-package com.example.wolfscreen
+package com.example.ravenscreen
 
 import android.os.SystemClock
 import android.util.Log
@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit
  */
 object GeminiClient {
 
-    // Мітка для системного журналу (adb logcat -s WolfScreen). Ключ туди не пишемо.
-    private const val TAG = "WolfScreen"
+    // Мітка для системного журналу (adb logcat -s RavenScreen). Ключ туди не пишемо.
+    private const val TAG = "RavenScreen"
 
     // «-latest» — псевдонім, який Google сам переводить на актуальну модель,
     // тож код не зламається, коли стару версію вимкнуть.
@@ -63,7 +63,7 @@ object GeminiClient {
     }
 
     // З якого режиму починати для кожної моделі: відхилені (400) пропускаємо, щоб наступні
-    // скріни не витрачали на них час. Живе, поки працює служба (весь час, доки WolfScreen увімкнений).
+    // скріни не витрачали на них час. Живе, поки працює служба (весь час, доки RavenScreen увімкнений).
     private val startMode = ConcurrentHashMap<String, Thinking>()
 
     // До якого моменту (SystemClock.elapsedRealtime) модель не питаємо: вичерпано її ліміт (429).
@@ -148,7 +148,7 @@ object GeminiClient {
 
             // Поганий ключ Google теж повертає з кодом 400 — це не про режим, і інша модель не допоможе.
             if (code == 400 && isKeyProblem(root, message)) {
-                throw IOException("Неправильний API-ключ. Перевір його в WolfScreen. ($message)")
+                throw IOException("Неправильний API-ключ. Перевір його в RavenScreen. ($message)")
             }
             // Модель не прийняла цей спосіб вимкнути «обдумування» — запам'ятовуємо й пробуємо
             // наступний. Google часто відповідає загальним «invalid argument», тож дивимось лише на код.

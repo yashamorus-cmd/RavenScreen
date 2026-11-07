@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Палітра «Нічний ворон»: усі кольори застосунку в одному місці.
+     Тема (themes.xml) посилається на них, а екрани беруть кольори з теми. -->
+<resources>
+    <!-- Нічне небо: фон і поверхні від найтемнішої до найсвітлішої -->
+    <color name="raven_night">#0E141D</color>
+    <color name="raven_surface">#172130</color>
+    <color name="raven_surface_high">#1F2B3D</color>
+    <color name="raven_outline">#3A4A60</color>
+
+    <!-- Місячне світло: основний акцент -->
+    <color name="raven_moon">#9CCBF0</color>
+    <color name="raven_on_moon">#082A44</color>
+    <color name="raven_moon_container">#1E4566</color>
+    <color name="raven_on_moon_container">#D2E8FB</color>
+
+    <!-- Сріблясте пір'я: другорядний сріблясто-сірий -->
+    <color name="raven_silver">#C3CCD8</color>
+    <color name="raven_on_silver">#232D3A</color>
+    <color name="raven_silver_container">#3A4554</color>
+    <color name="raven_on_silver_container">#DDE5F0</color>
+
+    <!-- Текст -->
+    <color name="raven_text">#E4E9F0</color>
+    <color name="raven_text_muted">#A3AEBD</color>
+
+    <!-- Стан «працює» (крапка статусу) -->
+    <color name="raven_ok">#7FD6A0</color>
+
+    <!-- Помилки -->
+    <color name="raven_error">#FFB4AB</color>
+    <color name="raven_on_error">#690005</color>
+</resources>

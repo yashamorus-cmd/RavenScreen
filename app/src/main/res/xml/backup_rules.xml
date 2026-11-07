@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Резервна копія для Android 11 і старших.
-     Налаштування WolfScreen містять API-ключ — у Google Drive він потрапляти не повинен. -->
+     Налаштування RavenScreen містять API-ключ — у Google Drive він потрапляти не повинен. -->
 <full-backup-content>
-    <exclude domain="sharedpref" path="wolf_prefs.xml" />
+    <exclude domain="sharedpref" path="raven_prefs.xml" />
 </full-backup-content>

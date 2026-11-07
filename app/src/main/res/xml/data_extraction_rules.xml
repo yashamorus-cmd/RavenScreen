@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Резервна копія й перенесення на новий телефон (Android 12+).
-     Налаштування WolfScreen містять API-ключ, тож їх не копіюємо нікуди:
+     Налаштування RavenScreen містять API-ключ, тож їх не копіюємо нікуди:
      на новому телефоні ключ просто вводиться ще раз. -->
 <data-extraction-rules>
     <cloud-backup>
-        <exclude domain="sharedpref" path="wolf_prefs.xml" />
+        <exclude domain="sharedpref" path="raven_prefs.xml" />
     </cloud-backup>
     <device-transfer>
-        <exclude domain="sharedpref" path="wolf_prefs.xml" />
+        <exclude domain="sharedpref" path="raven_prefs.xml" />
     </device-transfer>
 </data-extraction-rules>

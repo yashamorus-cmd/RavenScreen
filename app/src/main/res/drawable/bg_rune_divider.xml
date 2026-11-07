@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Розділювач: лінія — руни ᚱᚨᚹᛖᚾ (RAVEN) — лінія.
+     Згенеровано скриптом, тому координати такі «нерівні». -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="220dp"
+    android:height="16dp"
+    android:viewportWidth="220"
+    android:viewportHeight="16">
+    <path android:strokeColor="#FF3A4A60"
+        android:strokeWidth="1.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2,8 L83.3,8 M136.7,8 L218,8" />
+    <path android:fillColor="#CC9CCBF0"
+        android:pathData="M86.9,8.0 C86.9,7.2 87.5,6.6 88.3,6.6 C89.1,6.6 89.7,7.2 89.7,8.0 C89.7,8.8 89.1,9.4 88.3,9.4 C87.5,9.4 86.9,8.8 86.9,8.0 Z M130.3,8.0 C130.3,7.2 130.9,6.6 131.7,6.6 C132.5,6.6 133.1,7.2 133.1,8.0 C133.1,8.8 132.5,9.4 131.7,9.4 C130.9,9.4 130.3,8.8 130.3,8.0 Z" />
+    <path android:strokeColor="#FF9CCBF0"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M93.28,2.50 L93.28,13.50 M93.28,2.50 L97.68,5.25 L93.28,8.00 L97.68,13.50 M100.54,2.50 L100.54,13.50 M100.54,2.50 L104.94,5.25 M100.54,6.35 L104.94,9.10 M107.80,2.50 L107.80,13.50 M107.80,2.50 L112.20,5.25 L107.80,8.00 M115.06,2.50 L115.06,13.50 M119.46,2.50 L119.46,13.50 M115.06,2.50 L117.26,5.25 L119.46,2.50 M124.52,2.50 L124.52,13.50 M122.32,6.35 L126.72,9.65" />
+</vector>

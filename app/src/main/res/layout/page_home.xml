@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Вкладка «Головна»: банер нічного неба, статус із кроками налаштування, API-ключ і кнопки.
+     Спільний вигляд карток і надписів — у стилях Widget.RavenScreen.* (values/themes.xml). -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Банер: картинка неба, поверх неї назва -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.RavenScreen.Card"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            app:cardCornerRadius="24dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_night_sky" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:shadowColor="#CC000000"
+                        android:shadowRadius="8"
+                        android:text="@string/app_name"
+                        android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                        android:textColor="@color/raven_text"
+                        android:textStyle="bold"
+                        tools:targetApi="28" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:shadowColor="#CC000000"
+                        android:layout_marginTop="4dp"
+                        android:maxWidth="210dp"
+                        android:shadowRadius="6"
+                        android:text="@string/app_subtitle"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="@color/raven_on_moon_container"
+                        android:textStyle="italic" />
+                </LinearLayout>
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Руни ᚱᚨᚹᛖᚾ (RAVEN) — суто прикраса -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/bg_rune_divider" />
+
+        <!-- Статус і кроки налаштування -->
+        <TextView
+            style="@style/Widget.RavenScreen.Overline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overline_status" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.RavenScreen.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Крапка-індикатор: колір задає MainActivity. Стан дублюється текстом поруч. -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/statusDot"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:importantForAccessibility="no"
+                        app:cardBackgroundColor="@color/raven_text_muted"
+                        app:cardCornerRadius="6dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp" />
+
+                    <TextView
+                        android:id="@+id/statusText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/status_idle"
+                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+                </LinearLayout>
+
+                <!-- Кроки показуються, лише поки служба вимкнена -->
+                <LinearLayout
+                    android:id="@+id/setupHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/setup_title"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <LinearLayout style="@style/Widget.RavenScreen.StepRow">
+
+                        <TextView
+                            style="@style/Widget.RavenScreen.StepNumber"
+                            android:text="@string/step_number_1" />
+
+                        <TextView
+                            style="@style/Widget.RavenScreen.StepText"
+                            android:text="@string/setup_step_1" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/Widget.RavenScreen.StepRow">
+
+                        <TextView
+                            style="@style/Widget.RavenScreen.StepNumber"
+                            android:text="@string/step_number_2" />
+
+                        <TextView
+                            style="@style/Widget.RavenScreen.StepText"
+                            android:text="@string/setup_step_2" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/Widget.RavenScreen.StepRow">
+
+                        <TextView
+                            style="@style/Widget.RavenScreen.StepNumber"
+                            android:text="@string/step_number_3" />
+
+                        <TextView
+                            style="@style/Widget.RavenScreen.StepText"
+                            android:text="@string/setup_step_3" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/notifWarning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/notif_warning"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorError"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- API-ключ і кнопки -->
+        <TextView
+            style="@style/Widget.RavenScreen.Overline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overline_settings" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.RavenScreen.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:accessibilityHeading="true"
+                    android:text="@string/section_key_title"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    tools:targetApi="28" />
+
+                <!-- TextInputLayout дає підпис над полем і кнопку «показати/сховати» ключ. -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="?attr/textInputOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/api_key_hint"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:endIconMode="password_toggle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/apiKeyInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="password"
+                        android:inputType="textPassword"
+                        android:minHeight="56dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Кольорова тінь (API 28+) дає «місячне сяйво» навколо головної кнопки -->
+                <Button
+                    android:id="@+id/startButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:elevation="12dp"
+                    android:minHeight="56dp"
+                    android:outlineAmbientShadowColor="@color/raven_moon"
+                    android:outlineSpotShadowColor="@color/raven_moon"
+                    android:stateListAnimator="@null"
+                    android:text="@string/start_button"
+                    tools:targetApi="28" />
+
+                <Button
+                    android:id="@+id/stopButton"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:enabled="false"
+                    android:minHeight="56dp"
+                    android:text="@string/stop_button" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/hint_text"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>

@@ -1,4 +1,4 @@
-package com.example.wolfscreen
+package com.example.ravenscreen
 
 import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
@@ -151,7 +151,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
     private fun showOverlay(title: String, text: String) {
         hideOverlay()
         // Тема додатка — щоб картка мала кольори Material і світлий/темний режим телефона.
-        val themed = ContextThemeWrapper(this, R.style.Theme_WolfScreen)
+        val themed = ContextThemeWrapper(this, R.style.Theme_RavenScreen)
         val view = LayoutInflater.from(themed).inflate(R.layout.answer_overlay, null)
         view.findViewById<TextView>(R.id.overlayTitle).text = title
         view.findViewById<TextView>(R.id.overlayText).apply {
@@ -244,7 +244,7 @@ class ScreenshotAccessibilityService : AccessibilityService() {
     private fun prefs() = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
     companion object {
-        const val PREFS = "wolf_prefs"
+        const val PREFS = "raven_prefs"
         const val KEY_API = "api_key"
         const val KEY_LAST_ANSWER = "last_answer"
         const val LAST_SCREENSHOT_FILE = "last_screenshot.jpg"

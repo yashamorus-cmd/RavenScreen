@@ -1,4 +1,4 @@
-package com.example.wolfscreen
+package com.example.ravenscreen
 
 import android.app.Service
 import android.content.Context
@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 /**
  * Служба «переднього плану» (foreground), яка живе лише поки йде запит до ШІ.
  *
- * Навіщо: коли кнопка «📸 Скрін» відпрацювала, WolfScreen опиняється у фоні.
+ * Навіщо: коли кнопка «📸 Скрін» відпрацювала, RavenScreen опиняється у фоні.
  * У режимі «Енергозбереження» Android забороняє фоновим додаткам інтернет —
  * запит до Google «зависав» і закінчувався помилкою timeout.
  * Поки працює foreground-служба, додаток вважається активним і мережу не блокують.

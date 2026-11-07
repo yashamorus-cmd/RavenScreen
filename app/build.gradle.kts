@@ -12,13 +12,13 @@ val keystoreProps = Properties().apply {
 }
 
 android {
-    namespace = "com.example.wolfscreen"
+    namespace = "com.example.ravenscreen"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.wolfscreen"
+        applicationId = "com.example.ravenscreen"
         minSdk = 26
         targetSdk = 37
         // Збільшувати при кожному новому APK, який даєш іншим, — інакше Android може не оновити.

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Вкладка «Відповідь»: остання відповідь ШІ і скрін, з якого її отримано. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:accessibilityHeading="true"
+            android:text="@string/last_answer_title"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textStyle="bold"
+            tools:targetApi="28" />
+
+        <!-- Руни ᚱᚨᚹᛖᚾ (RAVEN) — суто прикраса -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/bg_rune_divider" />
+
+        <TextView
+            style="@style/Widget.RavenScreen.Overline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overline_answer" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.RavenScreen.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/lastAnswerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.15"
+                android:padding="16dp"
+                android:text="@string/last_answer_empty"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textIsSelectable="true" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Скрін і надпис над ним ховаються разом, поки скріна немає -->
+        <LinearLayout
+            android:id="@+id/screenshotSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/Widget.RavenScreen.Overline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/overline_screenshot" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.RavenScreen.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/lastScreenshot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/last_screenshot_desc"
+                    android:maxHeight="480dp"
+                    android:scaleType="fitCenter" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
