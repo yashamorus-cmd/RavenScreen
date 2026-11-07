@@ -260,5 +260,53 @@
                     android:textColor="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- Плитка в шторці (RavenTileService) -->
+        <TextView
+            style="@style/Widget.RavenScreen.Overline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overline_quick" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.RavenScreen.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tile_description"
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                <!-- Android 13+: системне вікно «Додати плитку?». Ховається на старіших версіях. -->
+                <Button
+                    android:id="@+id/addTileButton"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:minHeight="56dp"
+                    android:text="@string/add_tile_button"
+                    app:icon="@drawable/ic_tile_raven" />
+
+                <!-- Старіші Android: пояснюємо, як додати плитку вручну -->
+                <TextView
+                    android:id="@+id/tileManualHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/tile_manual_hint"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </ScrollView>

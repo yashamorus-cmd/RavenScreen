@@ -1,11 +1,14 @@
 package com.example.ravenscreen
 
 import android.Manifest
+import android.app.StatusBarManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -17,6 +20,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -95,6 +99,35 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             showPage(item.itemId)
             true
+        }
+        setupTileButton()
+    }
+
+    /** Кнопка «Додати плитку»: на Android 13+ системне вікно, на старіших — текстова підказка. */
+    private fun setupTileButton() {
+        val button = findViewById<Button>(R.id.addTileButton)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            button.setOnClickListener { requestAddTile() }
+        } else {
+            button.visibility = View.GONE
+            findViewById<View>(R.id.tileManualHint).visibility = View.VISIBLE
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestAddTile() {
+        getSystemService(StatusBarManager::class.java).requestAddTileService(
+            ComponentName(this, RavenTileService::class.java),
+            getString(R.string.tile_label),
+            Icon.createWithResource(this, R.drawable.ic_tile_raven),
+            mainExecutor
+        ) { result ->
+            val message = when (result) {
+                StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED -> R.string.tile_added
+                StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED -> R.string.tile_already_added
+                else -> null // відмовився чи сталася помилка — система вже все показала сама
+            }
+            message?.let { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
         }
     }
 
